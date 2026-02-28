@@ -116,7 +116,7 @@ const appendToGoogleSheet = async (payload: WeddingFormPayload): Promise<void> =
   }
 
   const accessToken = await getGoogleAccessToken(serviceAccountEmail, serviceAccountPrivateKey);
-  const range = encodeURIComponent(`${sheetName}!A:J`);
+  const range = encodeURIComponent(`${sheetName}!A:K`);
   const appendUrl = `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(
     spreadsheetId
   )}/values/${range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;
@@ -131,6 +131,7 @@ const appendToGoogleSheet = async (payload: WeddingFormPayload): Promise<void> =
     payload.city,
     payload.state,
     payload.zip,
+    payload.fortuneCookieHope || "",
     payload.userAgent || ""
   ];
 

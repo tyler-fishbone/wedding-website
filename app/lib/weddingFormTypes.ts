@@ -7,6 +7,7 @@ export type WeddingFormPayload = {
   city: string;
   state: string;
   zip: string;
+  fortuneCookieHope: string;
   submittedAt: string;
   userAgent: string;
 };
