@@ -28,6 +28,43 @@ body {
   padding: 16px;
 }
 
+.heroCard {
+  position: relative;
+  overflow: visible;
+}
+
+.heroCardLayout {
+  display: grid;
+  gap: 14px;
+}
+
+.heroCardIntro {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) 126px;
+  align-items: start;
+}
+
+.heroCardContent {
+  min-width: 0;
+}
+
+.heroCardArt {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  align-self: end;
+  pointer-events: none;
+}
+
+.heroCardArtImage {
+  display: block;
+  width: 100%;
+  max-width: 176px;
+  height: auto;
+  transform: translate(10px, 8px);
+}
+
 .eyebrow {
   margin: 0;
   font-size: 14px;
@@ -44,12 +81,28 @@ h2 {
 .sectionHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
 }
 
 .sectionHeader h2 {
   margin: 0;
+}
+
+.sectionHeadingButton {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  width: auto;
+  text-align: left;
+  font: inherit;
+  font-weight: inherit;
+}
+
+.sectionHeadingButton:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 4px;
 }
 
 .date {
@@ -60,6 +113,15 @@ h2 {
   display: grid;
   gap: 10px;
   margin-top: 14px;
+}
+
+.heroCard .calendarActions {
+  gap: 8px;
+  margin-top: 0;
+}
+
+.heroCardActions {
+  width: 100%;
 }
 
 .buttonLink,
@@ -82,13 +144,6 @@ button {
   color: #111;
 }
 
-.inlineButton {
-  width: auto;
-  padding: 8px 10px;
-  font-size: 13px;
-  white-space: nowrap;
-}
-
 form {
   display: grid;
   gap: 10px;
@@ -101,12 +156,19 @@ label {
   font-size: 14px;
 }
 
-input {
+input,
+textarea {
   width: 100%;
   font-size: 16px;
   padding: 10px;
   border: 1px solid #c7c7c7;
   border-radius: 8px;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 112px;
 }
 
 .errorMessage {
@@ -119,15 +181,59 @@ input {
   font-weight: 600;
 }
 
+.successPanel {
+  display: grid;
+  gap: 12px;
+  text-align: center;
+}
+
+.successPanel h2 {
+  margin: 0;
+}
+
+.photoPlaceholder {
+  min-height: 220px;
+  border: 1px dashed #999;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: linear-gradient(180deg, #faf7ef 0%, #f1eadc 100%);
+  color: #555;
+  font-size: 14px;
+}
+
+.successPhoto {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+}
+
 .privacyNote {
   margin-top: 12px;
   font-size: 12px;
   color: #555;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .page {
     padding-top: 40px;
     padding-bottom: 40px;
+  }
+
+  .heroCardLayout {
+    gap: 18px;
+  }
+
+  .heroCardIntro {
+    gap: 18px;
+    grid-template-columns: minmax(0, 1fr) 168px;
+  }
+
+  .heroCardArtImage {
+    max-width: 188px;
+    transform: translate(18px, -8px);
   }
 }
