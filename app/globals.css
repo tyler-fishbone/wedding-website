@@ -150,6 +150,11 @@ form {
   margin-top: 12px;
 }
 
+.nameRow {
+  display: grid;
+  gap: 10px;
+}
+
 label {
   display: grid;
   gap: 6px;
@@ -241,5 +246,9 @@ textarea {
   .heroCardArtImage {
     max-width: 188px;
     transform: translate(18px, -8px);
+  }
+
+  .nameRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

@@ -159,6 +159,8 @@ function HomeContent() {
         fortuneCookieHope: values.fortuneCookieHope,
         submittedAt: new Date().toISOString(),
         userAgent: navigator.userAgent,
+        pageUrl: window.location.href,
+        referrer: document.referrer,
       };
 
       await submitWeddingForm(payload);
@@ -227,27 +229,31 @@ function HomeContent() {
             )}
 
             <form onSubmit={handleSubmit} noValidate>
-              <label>
-                {isSingleGuest ? "First Name *" : "First Name - Guest 1 *"}
-                <input name="firstName1" value={values.firstName1} onChange={onInputChange} autoComplete="given-name" required />
-              </label>
+              <div className="nameRow">
+                <label>
+                  {isSingleGuest ? "First Name *" : "First Name - Guest 1 *"}
+                  <input name="firstName1" value={values.firstName1} onChange={onInputChange} autoComplete="given-name" required />
+                </label>
 
-              <label>
-                {isSingleGuest ? "Last Name *" : "Last Name - Guest 1 *"}
-                <input name="lastName1" value={values.lastName1} onChange={onInputChange} autoComplete="family-name" required />
-              </label>
+                <label>
+                  {isSingleGuest ? "Last Name *" : "Last Name - Guest 1 *"}
+                  <input name="lastName1" value={values.lastName1} onChange={onInputChange} autoComplete="family-name" required />
+                </label>
+              </div>
 
               {!isSingleGuest && (
                 <>
-                  <label>
-                    First Name - Guest 2
-                    <input name="firstName2" value={values.firstName2} onChange={onInputChange} autoComplete="off" />
-                  </label>
+                  <div className="nameRow">
+                    <label>
+                      First Name - Guest 2
+                      <input name="firstName2" value={values.firstName2} onChange={onInputChange} autoComplete="off" />
+                    </label>
 
-                  <label>
-                    Last Name - Guest 2
-                    <input name="lastName2" value={values.lastName2} onChange={onInputChange} autoComplete="off" />
-                  </label>
+                    <label>
+                      Last Name - Guest 2
+                      <input name="lastName2" value={values.lastName2} onChange={onInputChange} autoComplete="off" />
+                    </label>
+                  </div>
                 </>
               )}
 

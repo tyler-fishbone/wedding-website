@@ -13,4 +13,6 @@ export type WeddingFormPayload = {
   fortuneCookieHope: string;
   submittedAt: string;
   userAgent: string;
+  pageUrl: string;
+  referrer: string;
 };
