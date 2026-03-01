@@ -1,5 +1,8 @@
 export type WeddingFormPayload = {
-  fullName: string;
+  firstName1: string;
+  lastName1: string;
+  firstName2: string;
+  lastName2: string;
   email: string;
   phone: string;
   address1: string;

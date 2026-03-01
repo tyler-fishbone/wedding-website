@@ -176,6 +176,12 @@ textarea {
   font-weight: 600;
 }
 
+.guestModeNote {
+  margin: 0;
+  font-size: 13px;
+  color: #555;
+}
+
 .successMessage {
   color: #106d37;
   font-weight: 600;

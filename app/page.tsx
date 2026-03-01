@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useSearchParams } from "next/navigation";
 import { submitWeddingForm } from "./lib/submitWeddingForm";
 import type { WeddingFormPayload } from "./lib/weddingFormTypes";
 
@@ -18,7 +19,10 @@ type WeddingConfig = {
 };
 
 type FormValues = {
-  fullName: string;
+  firstName1: string;
+  lastName1: string;
+  firstName2: string;
+  lastName2: string;
   email: string;
   phone: string;
   address1: string;
@@ -43,7 +47,10 @@ const WEDDING_CONFIG: WeddingConfig = {
 };
 
 const initialValues: FormValues = {
-  fullName: "",
+  firstName1: "",
+  lastName1: "",
+  firstName2: "",
+  lastName2: "",
   email: "",
   phone: "",
   address1: "",
@@ -54,7 +61,7 @@ const initialValues: FormValues = {
   fortuneCookieHope: "",
 };
 
-const requiredFields: Array<keyof FormValues> = ["fullName", "email", "phone", "address1", "city", "state", "zip"];
+const requiredFields: Array<keyof FormValues> = ["firstName1", "lastName1", "email", "phone", "address1", "city", "state", "zip"];
 
 const buildGoogleCalendarUrl = (config: WeddingConfig): string => {
   const params = new URLSearchParams({
@@ -89,12 +96,14 @@ const validate = (values: FormValues): string | null => {
   return null;
 };
 
-export default function Home() {
+function HomeContent() {
+  const searchParams = useSearchParams();
   const [values, setValues] = React.useState<FormValues>(initialValues);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [submitted, setSubmitted] = React.useState(false);
 
+  const isSingleGuest = searchParams.get("g") === "echad";
   const googleCalendarUrl = React.useMemo(() => buildGoogleCalendarUrl(WEDDING_CONFIG), []);
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,7 +115,10 @@ export default function Home() {
     setSubmitted(false);
     setErrorMessage(null);
     setValues({
-      fullName: "Tyler Fishbone",
+      firstName1: "Tyler",
+      lastName1: "Fishbone",
+      firstName2: isSingleGuest ? "" : "Katie",
+      lastName2: isSingleGuest ? "" : "Berlin",
       email: "tyler.fishbone@gmail.com",
       phone: "3143244777",
       address1: "2207 Shoalmont Dr",
@@ -133,7 +145,10 @@ export default function Home() {
 
     try {
       const payload: WeddingFormPayload = {
-        fullName: values.fullName,
+        firstName1: values.firstName1,
+        lastName1: values.lastName1,
+        firstName2: isSingleGuest ? "" : values.firstName2,
+        lastName2: isSingleGuest ? "" : values.lastName2,
         email: values.email,
         phone: values.phone,
         address1: values.address1,
@@ -203,6 +218,7 @@ export default function Home() {
               </h2>
             </div>
             <p>{WEDDING_CONFIG.purposeText}</p>
+            {isSingleGuest && <p className="guestModeNote">This invitation is currently set to collect details for one guest.</p>}
 
             {errorMessage && (
               <p className="errorMessage" role="alert" aria-live="polite">
@@ -212,9 +228,28 @@ export default function Home() {
 
             <form onSubmit={handleSubmit} noValidate>
               <label>
-                Full Name * (one per household)
-                <input name="fullName" value={values.fullName} onChange={onInputChange} autoComplete="name" required />
+                {isSingleGuest ? "First Name *" : "First Name - Guest 1 *"}
+                <input name="firstName1" value={values.firstName1} onChange={onInputChange} autoComplete="given-name" required />
               </label>
+
+              <label>
+                {isSingleGuest ? "Last Name *" : "Last Name - Guest 1 *"}
+                <input name="lastName1" value={values.lastName1} onChange={onInputChange} autoComplete="family-name" required />
+              </label>
+
+              {!isSingleGuest && (
+                <>
+                  <label>
+                    First Name - Guest 2
+                    <input name="firstName2" value={values.firstName2} onChange={onInputChange} autoComplete="off" />
+                  </label>
+
+                  <label>
+                    Last Name - Guest 2
+                    <input name="lastName2" value={values.lastName2} onChange={onInputChange} autoComplete="off" />
+                  </label>
+                </>
+              )}
 
               <label>
                 Email * (one per household)
@@ -252,7 +287,7 @@ export default function Home() {
               </label>
 
               <label>
-                What do you hope your next fortune cookie fortune says?
+                What do you hope our next fortune cookie says?
                 <textarea
                   name="fortuneCookieHope"
                   value={values.fortuneCookieHope}
@@ -284,5 +319,13 @@ export default function Home() {
         )}
       </section>
     </main>
+  );
+}
+
+export default function Home() {
+  return (
+    <React.Suspense fallback={null}>
+      <HomeContent />
+    </React.Suspense>
   );
 }

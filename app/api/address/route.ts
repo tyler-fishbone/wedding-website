@@ -10,7 +10,8 @@ type ValidationResult = {
 };
 
 const requiredFields: Array<keyof WeddingFormPayload> = [
-  "fullName",
+  "firstName1",
+  "lastName1",
   "email",
   "phone",
   "address1",
@@ -116,14 +117,17 @@ const appendToGoogleSheet = async (payload: WeddingFormPayload): Promise<void> =
   }
 
   const accessToken = await getGoogleAccessToken(serviceAccountEmail, serviceAccountPrivateKey);
-  const range = encodeURIComponent(`${sheetName}!A:K`);
+  const range = encodeURIComponent(`${sheetName}!A:N`);
   const appendUrl = `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(
     spreadsheetId
   )}/values/${range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;
 
   const row = [
     payload.submittedAt || new Date().toISOString(),
-    payload.fullName,
+    payload.firstName1,
+    payload.lastName1,
+    payload.firstName2 || "",
+    payload.lastName2 || "",
     payload.email,
     payload.phone,
     payload.address1,
