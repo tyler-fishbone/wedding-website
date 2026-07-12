@@ -1,6 +1,17 @@
 # wedding-website
 
-Mobile-first Save the Date website built with Next.js + TypeScript.
+Mobile-first wedding website for Katie and Tyler, built with Next.js + TypeScript.
+
+## Routes
+
+- `/` — wedding home and countdown
+- `/our-story` — editorial story page
+- `/schedule` — wedding-weekend events
+- `/local-guide` — Austin lodging, food, activities, and transportation
+- `/faq` — guest questions
+- `/registry` — registry information
+- `/rsvp` — Coming Soon until formal responses open
+- `/save-the-date` — calendar links and mailing-address collection
 
 The mailing-address form submits to a Next.js API route (`POST /api/address`) and the server writes directly to Google Sheets with the Google Sheets API. This avoids browser CORS issues and keeps credentials server-side.
 
@@ -55,6 +66,7 @@ npm run dev
 
 ## Form behavior
 
+- Address collection lives at `/save-the-date`.
 - Client submits JSON to `/api/address`.
 - API route validates required fields, email format, and phone digits.
 - API route obtains a Google OAuth access token with the service account and appends one row to the configured sheet.

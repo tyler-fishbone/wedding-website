@@ -1,11 +1,14 @@
 {
   "name": "wedding-website",
   "version": "1.0.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next dev"
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/*.test.ts"
   },
   "dependencies": {
     "next": "16.1.6",

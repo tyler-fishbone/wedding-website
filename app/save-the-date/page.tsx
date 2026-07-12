@@ -1,0 +1,6 @@
+import Image from "next/image";
+import { SaveTheDateForm } from "../components/SaveTheDateForm";
+import { buildGoogleCalendarUrl } from "../lib/calendar";
+import { wedding } from "../content/wedding";
+export const metadata = { title: "Save the date" };
+export default function SaveTheDatePage() { const googleUrl = buildGoogleCalendarUrl({ title: `${wedding.couple} Wedding`, startDateTime: "20270404T160000", endDateTime: "20270404T230000", timezone: wedding.timezone, location: `${wedding.venue}, ${wedding.city}`, details: "Wedding details to follow." }); return <div className="page-shell save-date-page"><section className="save-date-hero"><div><p className="eyebrow">Save the date</p><h1>{wedding.couple}</h1><p className="date-lockup">{wedding.dateLabel}<br />{wedding.city}</p><p>Formal invitation and details to follow.</p><div className="button-row"><a className="button" href={googleUrl} target="_blank" rel="noreferrer">Google Calendar</a><a className="button button--outline" href="/add-to-apple-calendar.ics">Apple Calendar</a></div></div><div className="save-date-art"><Image src="/katie-tyler-drawing-bw.svg" alt="Illustration of Katie and Tyler" fill priority sizes="(max-width: 760px) 60vw, 340px" /></div></section><SaveTheDateForm /></div>; }

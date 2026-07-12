@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { SiteFooter } from "./components/SiteFooter";
+import { SiteHeader } from "./components/SiteHeader";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Tyler + Katie | Save the Date",
-  description: "Save the Date for Tyler + Katie"
+  title: { default: "Katie and Tyler", template: "%s | Katie and Tyler" },
+  description: "Wedding weekend details for Katie and Tyler in Austin, Texas."
 };
 
 export default function RootLayout({
@@ -14,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body><SiteHeader /><main>{children}</main><SiteFooter /></body>
     </html>
   );
 }
