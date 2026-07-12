@@ -16,6 +16,7 @@ test("navigation exposes every required direct route", () => {
     ["/", "/our-story", "/schedule", "/local-guide", "/faq", "/registry", "/rsvp", "/save-the-date"],
   );
   assert.ok(navigation.every((item) => !item.href.includes("javascript:")));
+  assert.deepEqual(navigation.filter((item) => item.highlight).map((item) => item.href), ["/save-the-date"]);
 });
 
 test("public content does not expose planning or template language", () => {

@@ -1,4 +1,4 @@
-export type NavigationItem = { label: string; href: string };
+export type NavigationItem = { label: string; href: string; highlight?: boolean };
 export type WeddingEvent = { id: string; eyebrow: string; day: string; name: string; status: "confirmed" | "coming-soon"; time: string; location: string; address?: string; attire: string; description: string; startDateTime?: string; endDateTime?: string };
 export type StorySection = { eyebrow: string; title: string; body: string };
 export type GuideItem = { eyebrow: string; title: string; body: string };
@@ -9,7 +9,7 @@ export type RegistryItem = { eyebrow: string; title: string; body: string; href?
 export const wedding = { couple: "Katie and Tyler", dateIso: "2027-04-04", dateLabel: "Sunday, April 4, 2027", shortDateLabel: "April 4, 2027", countdownTarget: "2027-04-04T16:00:00-05:00", city: "Austin, Texas", venue: "Addison Grove", timezone: "America/Chicago" } as const;
 
 export const navigation: NavigationItem[] = [
-  { label: "Home", href: "/" }, { label: "Our story", href: "/our-story" }, { label: "Schedule", href: "/schedule" }, { label: "Local guide", href: "/local-guide" }, { label: "FAQ", href: "/faq" }, { label: "Registry", href: "/registry" }, { label: "RSVP", href: "/rsvp" }, { label: "Save the date", href: "/save-the-date" },
+  { label: "Home", href: "/" }, { label: "Our story", href: "/our-story" }, { label: "Schedule", href: "/schedule" }, { label: "Local guide", href: "/local-guide" }, { label: "FAQ", href: "/faq" }, { label: "Registry", href: "/registry" }, { label: "RSVP", href: "/rsvp" }, { label: "Save the date", href: "/save-the-date", highlight: true },
 ];
 
 export const events: WeddingEvent[] = [
