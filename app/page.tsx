@@ -17,7 +17,7 @@ export default function Home() {
       </section>
 
       <section className="home-lockup" aria-label="Wedding details">
-        <h1>{wedding.couple}</h1>
+        <h1>{wedding.couple.replace(" and ", " & ")}</h1>
         <p>
           Sunday, April 4th, 2027
           <br />

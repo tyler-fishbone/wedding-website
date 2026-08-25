@@ -10,4 +10,4 @@ function FaqAnswer({ item }: { item: FaqItem }) {
   })}</p>;
 }
 
-export function FaqList({ items }: { items: FaqItem[] }) { return <div className="faq-list">{items.map((item) => <details key={item.question}><summary>{item.question}<span aria-hidden="true">+</span></summary><FaqAnswer item={item} /></details>)}</div>; }
+export function FaqList({ items }: { items: FaqItem[] }) { return <div className="faq-list">{items.map((item) => <article className="faq-item" key={item.question}><h2>{item.question}</h2><FaqAnswer item={item} /></article>)}</div>; }

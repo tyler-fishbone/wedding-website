@@ -1,4 +1,3 @@
-import { PageIntro } from "../components/PageIntro";
 import { PlusDivider } from "../components/PlusDivider";
 import { travelSections } from "../content/wedding";
 import type { GuideItem } from "../content/wedding";
@@ -19,9 +18,6 @@ function GuideItemBody({ item }: { item: GuideItem }) {
 export default function TravelPage() {
   return (
     <div className="page-shell">
-      <PageIntro eyebrow="Austin">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-      </PageIntro>
       {travelSections.map((section) => (
         <section className="guide-section" key={section.title}>
           <h2>{section.title}</h2>

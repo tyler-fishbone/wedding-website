@@ -1,11 +1,11 @@
 export type NavigationItem = { label: string; href: string; highlight?: boolean };
-export type WeddingEvent = { id: string; eyebrow: string; day: string; name: string; status: "confirmed" | "coming-soon"; time: string; location: string; locationHref?: string; address?: string; attire: string; description: string; startDateTime?: string; endDateTime?: string };
+export type WeddingEvent = { id: string; eyebrow: string; day: string; name: string; status: "confirmed" | "coming-soon"; time: string; location: string; locationHref?: string; address?: string; addressCityState?: string; addressHref?: string; attire: string; description: string; startDateTime?: string; endDateTime?: string };
 export type GuideItem = { eyebrow: string; title: string; body: string; bodyLink?: { label: string; href: string }; link?: { label: string; href: string }; note?: string };
 export type GuideSection = { title: string; items: GuideItem[] };
 export type FaqItem = { question: string; answer: string; answerLink?: { label: string; href: string } };
 export type RegistryItem = { eyebrow: string; title: string; body: string; href?: string; status: "active" | "coming-soon" };
 
-export const wedding = { couple: "Katie and Tyler", dateIso: "2027-04-04", dateLabel: "Sunday, April 4, 2027", shortDateLabel: "April 4, 2027", dateMark: "04 · 04 · 27", countdownTarget: "2027-04-04T16:00:00-05:00", city: "Austin, Texas", venue: "Addison Grove", timezone: "America/Chicago" } as const;
+export const wedding = { couple: "Katie and Tyler", dateIso: "2027-04-04", dateLabel: "Sunday, April 4, 2027", shortDateLabel: "April 4, 2027", dateMark: "04 · 04 · 27", countdownTarget: "2027-04-04T16:00:00-05:00", city: "Austin, Texas", venue: "The Addison Grove", timezone: "America/Chicago" } as const;
 
 export const navigation: NavigationItem[] = [
   { label: "Home", href: "/" },
@@ -19,8 +19,8 @@ export const navigation: NavigationItem[] = [
 ];
 
 export const events: WeddingEvent[] = [
-  { id: "welcome-party", eyebrow: "Saturday, April 3", day: "03", name: "Welcome party", status: "confirmed", time: "4–7 PM", location: "Nica on 4th", locationHref: "https://www.nicaon4th.com/home", address: "Austin, Texas", attire: "Snazzy casual", description: "Jazz, cocktails and light bites. Also lorem ipsum blarga sarunel.", startDateTime: "20270403T160000", endDateTime: "20270403T190000" },
-  { id: "wedding", eyebrow: "Sunday, April 4", day: "04", name: "Ceremony and reception", status: "coming-soon", time: "Details to come", location: wedding.venue, address: "Austin, Texas", attire: "Garden formal", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation." },
+  { id: "welcome-party", eyebrow: "Saturday, April 3", day: "03", name: "Welcome party", status: "confirmed", time: "4–7 PM", location: "Nica on 4th", locationHref: "https://www.nicaon4th.com/home", address: "117 W 4th Street, Suite 101A", addressCityState: "Austin, TX 78701", addressHref: "https://www.google.com/maps/search/?api=1&query=Nica+on+4th+117+W+4th+Street+Suite+101A+Austin+TX+78701", attire: "Snazzy casual", description: "Jazz, cocktails and light bites.", startDateTime: "20270403T160000", endDateTime: "20270403T190000" },
+  { id: "wedding", eyebrow: "Sunday, April 4", day: "04", name: "Wedding Ceremony & Partáy", status: "confirmed", time: "5–11 PM", location: wedding.venue, locationHref: "https://www.theaddisongrove.com/", address: "11903 Fitzhugh Road", addressCityState: "Austin, TX 78736", addressHref: "https://www.google.com/maps/search/?api=1&query=The+Addison+Grove+11903+Fitzhugh+Road+Austin+TX+78736", attire: "Garden formal", description: "", startDateTime: "20270404T170000", endDateTime: "20270404T230000" },
 ];
 
 export const travelSections: GuideSection[] = [
@@ -34,11 +34,11 @@ export const guideSections: GuideSection[] = [
 ];
 
 export const faqs: FaqItem[] = [
-  { question: "Can we bring our kids?", answer: "If they're over 18 and were invited, definitely! Otherwise, this wedding is adults only. We look forward to spending adult with timewith you.\nNot like that, but like... you know." },
+  { question: "Can we bring our kids?", answer: "If they're over 18 and their names are on the invitation, definitely! Otherwise, this wedding is adults only. We look forward to spending some adult time with you. Not like that, but like... you know." },
   { question: "Am I invited to the welcome party?", answer: "Weekend-event details will be included with your invitation." },
-  { question: "What should I wear?", answer: "See the schedule page.", answerLink: { label: "schedule page", href: "/schedule" } },
-  { question: "Is the ceremony indoors or outdoors?", answer: "We’ve planned an outdoor ceremony and reception. However, we may move inside if the weather changes. Keep an eye on the weather closer to our wedding date — and bring an umbrella if necessary!" },
-  { question: "Is there parking at the venue?", answer: "Yes. We’ll publish full arrival and transportation guidance closer to the date." },
+  { question: "What should I wear?", answer: "See the schedule page. If you have any questions, reach out to Tyler or Katie!", answerLink: { label: "schedule page", href: "/schedule" } },
+  { question: "Is the ceremony indoors or outdoors?", answer: "We’ve planned an outdoor ceremony, but we’ll pivot indoors if the weather changes. Keep an eye on the forecast closer to our wedding weekend in case you need to pack an umbrella!" },
+  { question: "Is there parking at the venue?", answer: "Yes, there’s plenty of parking at the venue. It’s about a 25-minute drive from the Hyatt Regency Austin, so feel free to carpool. We will have a shuttle bus for out-of-towners, coming to and from the Hyatt on Sunday. Since the venue is a bit more remote, rideshares can be more infrequent — so we recommend planning accordingly." },
   { question: "Do you have a gift registry?", answer: "Not yet. We’ll add registry information here when it is ready." },
   { question: "Can I bring a plus-one?", answer: "Please follow the names on your invitation. Reach out to us if anything is unclear." },
 ];
