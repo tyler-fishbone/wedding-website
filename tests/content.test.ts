@@ -13,7 +13,7 @@ test("wedding facts use the confirmed date and weekday", () => {
 test("navigation exposes every required direct route", () => {
   assert.deepEqual(
     navigation.map((item) => item.href),
-    ["/", "/our-story", "/schedule", "/local-guide", "/faq", "/registry", "/rsvp", "/save-the-date"],
+    ["/", "/schedule", "/travel", "/local-guide", "/faq", "/registry", "/rsvp", "/save-the-date"],
   );
   assert.ok(navigation.every((item) => !item.href.includes("javascript:")));
   assert.deepEqual(navigation.filter((item) => item.highlight).map((item) => item.href), ["/save-the-date"]);
