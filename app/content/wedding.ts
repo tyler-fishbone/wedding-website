@@ -2,6 +2,7 @@ export type NavigationItem = { label: string; href: string; highlight?: boolean 
 export type WeddingEvent = { id: string; eyebrow: string; day: string; name: string; status: "confirmed" | "coming-soon"; time: string; location: string; locationHref?: string; address?: string; addressCityState?: string; addressHref?: string; attire: string; description: string; startDateTime?: string; endDateTime?: string };
 export type GuideItem = { eyebrow: string; title: string; body: string; bodyLink?: { label: string; href: string }; link?: { label: string; href: string }; note?: string };
 export type GuideSection = { title: string; items: GuideItem[] };
+export type GuidePlace = { id: string; category: "Eat & drink" | "Things to do" | "Live music"; title: string; subtitle: string; body: string; lat: number; lng: number; mapHref: string };
 export type FaqItem = { question: string; answer: string; answerLink?: { label: string; href: string } };
 export type RegistryItem = { eyebrow: string; title: string; body: string; href?: string; status: "active" | "coming-soon" };
 
@@ -31,6 +32,31 @@ export const travelSections: GuideSection[] = [
 export const guideSections: GuideSection[] = [
   { title: "Eat and drink", items: [{ eyebrow: "Restaurants", title: "Restaurants", body: "Casa de Luz, Lolo Wine Bar, Lenoir, Loro, Odd Duck, and Fonda San Miguel." }, { eyebrow: "Barbecue", title: "Barbecue", body: "Leroy and Lewis, KG BBQ, and Mum Foods." }, { eyebrow: "Mexican", title: "Mexican", body: "Veracruz All Natural, El Alma, and Matt’s El Rancho." }, { eyebrow: "Coffee", title: "Coffee", body: "Desnudo, Figure 8, and Radio." }] },
   { title: "What to do", items: [{ eyebrow: "Swimming", title: "Swimming", body: "Barton Springs and Deep Eddy." }, { eyebrow: "Live music", title: "Live music", body: "Antone’s, the Continental Club, the Broken Spoke, the White Horse, and Equipment Room." }] },
+];
+
+export const guidePlaces: GuidePlace[] = [
+  { id: "casa-de-luz", category: "Eat & drink", title: "Casa de Luz", subtitle: "Vegetarian", body: "A bright, communal spot for fresh vegetarian meals.", lat: 30.2583, lng: -97.7682, mapHref: "https://www.google.com/maps/search/?api=1&query=Casa+de+Luz+Austin" },
+  { id: "lolo", category: "Eat & drink", title: "Lolo", subtitle: "Wine bar", body: "A neighborhood wine bar with a relaxed Austin feel.", lat: 30.2633, lng: -97.7282, mapHref: "https://www.google.com/maps/search/?api=1&query=Lolo+Austin" },
+  { id: "lenoir", category: "Eat & drink", title: "Lenoir", subtitle: "Restaurant", body: "Seasonal cooking and a lovely courtyard on South First.", lat: 30.2484, lng: -97.7555, mapHref: "https://www.google.com/maps/search/?api=1&query=Lenoir+Austin" },
+  { id: "loro", category: "Eat & drink", title: "Loro", subtitle: "Asian smokehouse", body: "A casual stop for smoked meats, salads, and frozen drinks.", lat: 30.2508, lng: -97.7634, mapHref: "https://www.google.com/maps/search/?api=1&query=Loro+Austin" },
+  { id: "odd-duck", category: "Eat & drink", title: "Odd Duck", subtitle: "Restaurant", body: "Creative, seasonal plates with a focus on local ingredients.", lat: 30.2603, lng: -97.7643, mapHref: "https://www.google.com/maps/search/?api=1&query=Odd+Duck+Austin" },
+  { id: "fonda-san-miguel", category: "Eat & drink", title: "Fonda San Miguel", subtitle: "Mexican", body: "Classic interior, regional Mexican food, and a beautiful patio.", lat: 30.3237, lng: -97.7412, mapHref: "https://www.google.com/maps/search/?api=1&query=Fonda+San+Miguel+Austin" },
+  { id: "leroy-and-lewis", category: "Eat & drink", title: "Leroy and Lewis", subtitle: "Barbecue", body: "Modern Central Texas barbecue with a thoughtful, seasonal approach.", lat: 30.2565, lng: -97.7052, mapHref: "https://www.google.com/maps/search/?api=1&query=Leroy+and+Lewis+Austin" },
+  { id: "kg-bbq", category: "Eat & drink", title: "KG BBQ", subtitle: "Barbecue", body: "Texas barbecue with Egyptian-inspired flavors.", lat: 30.2721, lng: -97.7311, mapHref: "https://www.google.com/maps/search/?api=1&query=KG+BBQ+Austin" },
+  { id: "mum-foods", category: "Eat & drink", title: "Mum Foods", subtitle: "Barbecue", body: "A neighborhood favorite for smoked meats and sandwiches.", lat: 30.2921, lng: -97.6883, mapHref: "https://www.google.com/maps/search/?api=1&query=Mum+Foods+Austin" },
+  { id: "veracruz", category: "Eat & drink", title: "Veracruz All Natural", subtitle: "Mexican", body: "Tacos, migas, and fresh juices from a beloved Austin institution.", lat: 30.2632, lng: -97.7291, mapHref: "https://www.google.com/maps/search/?api=1&query=Veracruz+All+Natural+Austin" },
+  { id: "el-alma", category: "Eat & drink", title: "El Alma", subtitle: "Mexican", body: "Regional Mexican food with a rooftop view of downtown.", lat: 30.2641, lng: -97.7591, mapHref: "https://www.google.com/maps/search/?api=1&query=El+Alma+Austin" },
+  { id: "matts-el-rancho", category: "Eat & drink", title: "Matt's El Rancho", subtitle: "Tex-Mex", body: "A longtime South Austin Tex-Mex classic.", lat: 30.2483, lng: -97.7771, mapHref: "https://www.google.com/maps/search/?api=1&query=Matts+El+Rancho+Austin" },
+  { id: "desnudo", category: "Eat & drink", title: "Desnudo", subtitle: "Coffee", body: "Small-batch coffee and a calm place to start the day.", lat: 30.2612, lng: -97.7284, mapHref: "https://www.google.com/maps/search/?api=1&query=Desnudo+Austin" },
+  { id: "figure-8", category: "Eat & drink", title: "Figure 8", subtitle: "Coffee", body: "Carefully made coffee in East Austin.", lat: 30.2661, lng: -97.7204, mapHref: "https://www.google.com/maps/search/?api=1&query=Figure+8+Coffee+Austin" },
+  { id: "radio-coffee", category: "Eat & drink", title: "Radio Coffee", subtitle: "Coffee", body: "Coffee, food trucks, and a spacious South Austin patio.", lat: 30.2342, lng: -97.7901, mapHref: "https://www.google.com/maps/search/?api=1&query=Radio+Coffee+Austin" },
+  { id: "barton-springs", category: "Things to do", title: "Barton Springs", subtitle: "Swimming", body: "A spring-fed pool in Zilker Park. Bring a towel and check hours before you go.", lat: 30.2636, lng: -97.7684, mapHref: "https://www.google.com/maps/search/?api=1&query=Barton+Springs+Pool+Austin" },
+  { id: "deep-eddy", category: "Things to do", title: "Deep Eddy", subtitle: "Swimming", body: "A historic neighborhood pool on the Colorado River.", lat: 30.2765, lng: -97.7654, mapHref: "https://www.google.com/maps/search/?api=1&query=Deep+Eddy+Pool+Austin" },
+  { id: "antones", category: "Live music", title: "Antone's", subtitle: "Live music", body: "A downtown institution for blues and live music.", lat: 30.2664, lng: -97.7421, mapHref: "https://www.google.com/maps/search/?api=1&query=Antones+Austin" },
+  { id: "continental-club", category: "Live music", title: "The Continental Club", subtitle: "Live music", body: "A South Congress classic with music most nights.", lat: 30.2481, lng: -97.7502, mapHref: "https://www.google.com/maps/search/?api=1&query=Continental+Club+Austin" },
+  { id: "broken-spoke", category: "Live music", title: "Broken Spoke", subtitle: "Dance hall", body: "A legendary Texas dance hall with live country music.", lat: 30.2444, lng: -97.7863, mapHref: "https://www.google.com/maps/search/?api=1&query=Broken+Spoke+Austin" },
+  { id: "white-horse", category: "Live music", title: "The White Horse", subtitle: "Dance hall", body: "East Austin honky-tonk with live music and dancing.", lat: 30.2626, lng: -97.7273, mapHref: "https://www.google.com/maps/search/?api=1&query=White+Horse+Austin" },
+  { id: "equipment-room", category: "Live music", title: "Equipment Room", subtitle: "Cocktail bar", body: "A polished East Austin bar with a music-forward atmosphere.", lat: 30.2646, lng: -97.7271, mapHref: "https://www.google.com/maps/search/?api=1&query=Equipment+Room+Austin" },
 ];
 
 export const faqs: FaqItem[] = [
