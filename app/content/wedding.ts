@@ -21,7 +21,7 @@ export const navigation: NavigationItem[] = [
 
 export const events: WeddingEvent[] = [
   { id: "welcome-party", eyebrow: "Saturday, April 3", day: "03", name: "Welcome party", status: "confirmed", time: "4–7 PM", location: "Nica on 4th", locationHref: "https://www.nicaon4th.com/home", address: "117 W 4th Street, Suite 101A", addressCityState: "Austin, TX 78701", addressHref: "https://www.google.com/maps/search/?api=1&query=Nica+on+4th+117+W+4th+Street+Suite+101A+Austin+TX+78701", attire: "Snazzy casual", description: "Jazz, cocktails and light bites.", startDateTime: "20270403T160000", endDateTime: "20270403T190000" },
-  { id: "wedding", eyebrow: "Sunday, April 4", day: "04", name: "Wedding Ceremony & Partáy", status: "confirmed", time: "5–11 PM", location: wedding.venue, locationHref: "https://www.theaddisongrove.com/", address: "11903 Fitzhugh Road", addressCityState: "Austin, TX 78736", addressHref: "https://www.google.com/maps/search/?api=1&query=The+Addison+Grove+11903+Fitzhugh+Road+Austin+TX+78736", attire: "Garden formal", description: "", startDateTime: "20270404T170000", endDateTime: "20270404T230000" },
+  { id: "wedding", eyebrow: "Sunday, April 4", day: "04", name: "Wedding Ceremony & Partáy", status: "confirmed", time: "5–11 PM", location: wedding.venue, locationHref: "https://www.theaddisongrove.com/", address: "11903 Fitzhugh Road", addressCityState: "Austin, TX 78736", addressHref: "https://www.google.com/maps/search/?api=1&query=The+Addison+Grove+11903+Fitzhugh+Road+Austin+TX+78736", attire: "TBD", description: "", startDateTime: "20270404T170000", endDateTime: "20270404T230000" },
 ];
 
 export const travelSections: GuideSection[] = [
