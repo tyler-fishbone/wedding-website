@@ -132,7 +132,7 @@ export function LocalGuideExplorer() {
             <span className="guide-place__category">{place.category}</span>
             <span className="guide-place__title">{place.title}</span>
             <span className="guide-place__subtitle">{place.subtitle}</span>
-            <span className="guide-place__body">{place.body}</span>
+            <span className="guide-place__body" style={{ whiteSpace: "pre-line" }}>{place.body}</span>
           </button>
           <a className="guide-place__map-link" href={place.mapHref} target="_blank" rel="noreferrer">Open in Google Maps ↗</a>
         </article>)}
