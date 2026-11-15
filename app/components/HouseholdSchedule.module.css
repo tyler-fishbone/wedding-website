@@ -1,0 +1,9 @@
+.heading{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.heading h2{margin:0 0 8px}
+.heading p{margin:0;font-size:15px}
+.heading button{margin:0;background:none;cursor:pointer;white-space:nowrap}
+.rsvpNotice{border-left:3px solid var(--blue);background:var(--bone);padding:18px 20px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.rsvpNotice p{margin:0;font-size:15px}
+.rsvpNotice a{min-width:0}
+.schedule :global(.event-card){padding:28px 0}
+@media(max-width:600px){.heading{align-items:flex-start}.heading button{font-size:13px}.rsvpNotice{padding:16px}.schedule :global(.event-card__body) h2{font-size:27px}}

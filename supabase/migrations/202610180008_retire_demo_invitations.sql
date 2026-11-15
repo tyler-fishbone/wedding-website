@@ -1,0 +1,6 @@
+BEGIN;
+-- Keep regression fixtures archived while preventing public lookup or responses.
+UPDATE public.invitations SET is_active=false
+WHERE guest_id IN ('20000000-0000-4000-8000-000000000001','20000000-0000-4000-8000-000000000002','20000000-0000-4000-8000-000000000003')
+AND event_id IN ('30000000-0000-4000-8000-000000000001','30000000-0000-4000-8000-000000000002');
+COMMIT;

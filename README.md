@@ -10,10 +10,10 @@ Mobile-first wedding website for Katie and Tyler, built with Next.js + TypeScrip
 - `/local-guide` — Austin lodging, food, activities, and transportation
 - `/faq` — guest questions
 - `/registry` — registry information
-- `/rsvp` — Coming Soon until formal responses open
+- `/rsvp` — household lookup and event RSVPs backed by Supabase
 - `/save-the-date` — calendar links and mailing-address collection
 
-The mailing-address form submits to a Next.js API route (`POST /api/address`) and the server writes directly to Google Sheets with the Google Sheets API. This avoids browser CORS issues and keeps credentials server-side.
+The mailing-address form submits to `POST /api/address`. The server archives submissions in Supabase, updates a clearly matched household, and sends ambiguous matches to the private admin review. Address collection stays separate from RSVP.
 
 ## Local development
 
@@ -29,14 +29,16 @@ npm install
 cp .env.example .env.local
 ```
 
-3. Set Google Sheets env values in `.env.local`:
+3. Set server-only Supabase values in `.env.local`:
 
 ```bash
-GOOGLE_SHEETS_SPREADSHEET_ID=your-google-sheet-id
-GOOGLE_SHEETS_SHEET_NAME=Responses
-GOOGLE_SERVICE_ACCOUNT_EMAIL=your-service-account@project.iam.gserviceaccount.com
-GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SECRET_KEY=your-server-secret-key
+RSVP_SESSION_SECRET=a-random-secret-of-at-least-32-characters
+RSVP_ADMIN_PASSPHRASE=your-private-planning-passphrase
 ```
+
+Address collection needs only the database URL and secret key. RSVP and admin sessions also need their respective secrets.
 
 4. Start dev server:
 
@@ -44,30 +46,19 @@ GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END P
 npm run dev
 ```
 
-## Environment variables
+## Configuration and deployment
 
-- `GOOGLE_SHEETS_SPREADSHEET_ID`: destination spreadsheet ID.
-- `GOOGLE_SHEETS_SHEET_NAME`: destination tab name (defaults to `Responses`).
-- `GOOGLE_SERVICE_ACCOUNT_EMAIL`: Google service account client email.
-- `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY`: service account private key (store with literal `\n` newlines).
-- `NEXT_PUBLIC_BASE_PATH`: optional only if hosting under a subpath.
-
-## Vercel deployment
-
-1. Push this repo to GitHub.
-2. Import the repo into Vercel.
-3. In Vercel Project Settings > Environment Variables, set:
-   - `GOOGLE_SHEETS_SPREADSHEET_ID`
-   - `GOOGLE_SHEETS_SHEET_NAME` (optional, defaults to `Responses`)
-   - `GOOGLE_SERVICE_ACCOUNT_EMAIL`
-   - `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY`
-4. Deploy.
-5. Share your Google Sheet with the service account email as an editor.
+See [setup notes](docs/rsvp-setup.md) for server credentials, migrations, fictional fixtures, and verification. Configure the same server-only values in Vercel before deploying. Google Sheets credentials are no longer required for address collection. Never prefix server secrets with `NEXT_PUBLIC_`.
 
 ## Form behavior
 
-- Address collection lives at `/save-the-date`.
-- Client submits JSON to `/api/address`.
-- API route validates required fields, email format, and phone digits.
-- API route obtains a Google OAuth access token with the service account and appends one row to the configured sheet.
-- If `GOOGLE_SHEETS_SPREADSHEET_ID` is missing (local dev), the API logs payload and returns a fake success after a short delay.
+- Address collection lives at `/save-the-date` and stores new submissions in Supabase.
+- Consistent exact names or an email match can identify an existing household; conflicting or ambiguous matches require private admin review.
+- Submissions preserve mailing holds and never create guests, households, event invitations, or RSVP answers.
+- Countries outside the US have flexible state and postal fields.
+- Every submission is archived, including the optional fortune-cookie answer. Retries are idempotent.
+- Missing configuration or a failed write returns an error. Submitted contact details are never logged.
+
+## RSVP persistence
+
+See [RSVP setup](docs/rsvp-setup.md) for Supabase configuration, SQL migrations, fictional fixtures, and end-to-end verification. The save-the-date address flow uses the same database while keeping separate screens and server operations.
