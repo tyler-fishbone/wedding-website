@@ -32,4 +32,8 @@
 .reviewGuests{margin:0}
 .reviewGuests>div{display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-bottom:1px solid var(--line-soft);font-size:15px}
 .reviewGuests dd{margin:0;text-align:right;white-space:nowrap}
+.reviewGuests .dietaryNote{white-space:pre-wrap;overflow-wrap:anywhere}
+.dietaryFields{border-top:1px solid var(--line);padding-top:16px;margin-bottom:20px}
+.dietaryFields label{display:block;margin-bottom:16px}
+.dietaryFields textarea{display:block;width:100%;margin-top:6px}
 @media(max-width:520px){.guestRow{grid-template-columns:1fr;gap:10px;padding:14px 0}.choices{display:grid;grid-template-columns:1fr 1fr}.root .navigation button{padding:12px;min-width:72px}.reviewGuests>div{font-size:14px}.root .reviewHeading h3{font-size:20px}}

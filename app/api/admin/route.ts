@@ -30,7 +30,7 @@ export async function GET(request:Request){
   const invitationFilter=scopedGuests?`&guest_id=in.(${scopedGuests.map(guest=>guest.id).join(',')||'00000000-0000-4000-8000-000000000000'})`:'';
   const [households,guests,events,invitations,responses,issues,addressSubmissions]=await Promise.all([
    database<AdminHousehold[]>(`households?select=id,display_name,contact_email,phone,address_line_1,address_line_2,city,region,postal_code,country_code,mailing_status,grouping_needs_review&order=display_name${householdFilter}`),
-   scopedGuests?Promise.resolve(scopedGuests):database<AdminGuest[]>(`guests?archived_at=is.null&select=id,household_id,display_name,email,is_family&order=display_name${guestFilter}`),
+   scopedGuests?Promise.resolve(scopedGuests):database<AdminGuest[]>(`guests?archived_at=is.null&select=id,household_id,display_name,email,is_family,dietary_restrictions&order=display_name${guestFilter}`),
    database<{id:string;name:string}[]>('events?select=id,name&order=starts_at&slug=not.in.(family-shabbarbeque,family-shabbarbecue)'),
    database<AdminInvitation[]>(`invitations?select=guest_id,event_id,review_required,assignment_source,is_active${invitationFilter}`),
    database<AdminResponse[]>(`rsvp_responses?select=guest_id,event_id,attendance${invitationFilter}`),

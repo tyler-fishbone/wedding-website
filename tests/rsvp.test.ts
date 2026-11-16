@@ -69,7 +69,7 @@ test('name lookup tries the exact name before using a known alternate spelling',
 
 test('name corrections only apply to invited guests in the confirmed household',()=>{
  const view:Parameters<typeof validateNameCorrection>[0]={
-  id:'household',name:'Example household',
+  id:'household',name:'Example household',guests:[{id:'guest',name:'Sam Exampel',dietaryRestrictions:null}],
   events:[{id:'wedding',name:'Wedding',startsAt:null,endsAt:null,timeZone:'America/Chicago',venue:null,description:null,attire:null,
    guests:[{id:'guest',name:'Sam Exampel',attendance:'attending'}]}]
  };
@@ -78,10 +78,10 @@ test('name corrections only apply to invited guests in the confirmed household',
  for(const name of [' ', 'Sam Exampel', 'Sam\nExample', 'a'.repeat(101)])assert.throws(()=>validateNameCorrection(view,'guest',name),{status:400});
 });
 
-test('dietary notes are optional, bounded and scoped to guests on the invitation',async()=>{
+test('dietary notes are editable (blank clears), bounded and scoped to guests on the invitation',async()=>{
  const {validateDietaryRestrictions}=await import('../app/lib/rsvp.ts');
  const invites=[{guest_id:'alex',event_id:'wedding'},{guest_id:'blair',event_id:'wedding'},{guest_id:'alex',event_id:'brunch'}];
- assert.deepEqual(validateDietaryRestrictions([{guestId:'alex',restrictions:'  Gluten-free\nNo walnuts  '},{guestId:'blair',restrictions:'  '}],invites),[{guestId:'alex',restrictions:'Gluten-free\nNo walnuts'}]);
+ assert.deepEqual(validateDietaryRestrictions([{guestId:'alex',restrictions:'  Gluten-free\nNo walnuts  '},{guestId:'blair',restrictions:'  '}],invites),[{guestId:'alex',restrictions:'Gluten-free\nNo walnuts'},{guestId:'blair',restrictions:''}]);
  for(const notes of [[{guestId:'foreign',restrictions:'No eggs'}],[{guestId:'alex',restrictions:'a'.repeat(501)}],[{guestId:'alex',restrictions:'First'},{guestId:'alex',restrictions:'Second'}]]) {
   assert.throws(()=>validateDietaryRestrictions(notes,invites),{status:400});
  }

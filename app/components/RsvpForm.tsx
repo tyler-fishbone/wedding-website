@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import styles from './RsvpForm.module.css';
-import {GuestDietaryRestrictions} from './GuestDietaryRestrictions';
 import {GuestNameCorrection} from './GuestNameCorrection';
 import {HouseholdSchedule} from './HouseholdSchedule';
 import type {WeddingEvent} from '../content/wedding';
@@ -10,7 +9,7 @@ import type { Attendance, HouseholdView, ResponseInput } from '../lib/rsvp';
 
 type Match = {name:string;guestNames:string[];token:string};
 type Result = {schedule?:WeddingEvent[];household?:HouseholdView;matches?:Match[];error?:string};
-type Step = 'lookup'|'confirm'|'edit'|'review'|'success';
+type Step = 'lookup'|'confirm'|'edit'|'dietary'|'review'|'success';
 async function request(body?: unknown, method?: string, purpose: 'rsvp'|'schedule' = 'rsvp'): Promise<Result> {
  const response = await fetch(purpose==='schedule'?'/api/rsvp?view=schedule':'/api/rsvp',{method:method??(body?'POST':'GET'),credentials:'same-origin',cache:'no-store',...(body?{headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{})});
  const result = await response.json() as Result;
@@ -43,7 +42,7 @@ export function RsvpForm({purpose='rsvp'}:{purpose?:'rsvp'|'schedule'}) {
   return ()=>{active=false;};
  },[purpose]);
  useEffect(()=>{
-  if((step==='edit'||step==='review'||step==='success')&&eventHeading.current){eventHeading.current.focus({preventScroll:true});eventHeading.current.scrollIntoView({block:'start'});}
+  if((step==='edit'||step==='dietary'||step==='review'||step==='success')&&eventHeading.current){eventHeading.current.focus({preventScroll:true});eventHeading.current.scrollIntoView({block:'start'});}
  },[step,eventIndex]);
  async function find(event: FormEvent<HTMLFormElement>) {
   event.preventDefault(); setBusy(true); setError(null); setNotFound(false);
@@ -74,7 +73,10 @@ export function RsvpForm({purpose='rsvp'}:{purpose?:'rsvp'|'schedule'}) {
   if(eventIndex<household.events.length-1){setEventIndex(eventIndex+1);return;}
   const unansweredIndex=household.events.findIndex(invitedEvent=>invitedEvent.guests.some(guest=>!guest.attendance));
   if(unansweredIndex!==-1){setEventIndex(unansweredIndex);setError('Please choose a response for each guest before continuing.');return;}
-  setStep('review');
+  setStep('dietary');
+ }
+ function setDietary(guestId:string,dietaryRestrictions:string) {
+  setHousehold(current=>current?{...current,guests:current.guests.map(guest=>guest.id===guestId?{...guest,dietaryRestrictions}:guest)}:current);
  }
  function editEvent(index: number) {
   setEventIndex(index);setError(null);setStep('edit');
@@ -84,7 +86,8 @@ export function RsvpForm({purpose='rsvp'}:{purpose?:'rsvp'|'schedule'}) {
   const responses:ResponseInput[]=[];
   for(const event of household.events)for(const guest of event.guests){if(!guest.attendance)return;responses.push({eventId:event.id,guestId:guest.id,attendance:guest.attendance});}
   setBusy(true);setError(null);
-  try{const result=await pageRequest({action:'save',responses});if(!result.household)throw new Error('Please try again.');setHousehold(result.household);setStep('success');}catch(error){setError(error instanceof Error?error.message:'Please try again.');}finally{setBusy(false);}
+  const dietaryRestrictions=household.guests.map(guest=>({guestId:guest.id,restrictions:guest.dietaryRestrictions??''}));
+  try{const result=await pageRequest({action:'save',responses,dietaryRestrictions});if(!result.household)throw new Error('Please try again.');setHousehold(result.household);setStep('success');}catch(error){setError(error instanceof Error?error.message:'Please try again.');}finally{setBusy(false);}
  }
  if(loadingSession)return <section className={`form-card ${styles.root}`} style={{marginTop:24}} aria-busy="true"><p role="status">{purpose==='schedule'?'Loading your schedule…':'Loading your invitation…'}</p></section>;
  const currentEvent=household?.events[eventIndex];
@@ -113,10 +116,6 @@ export function RsvpForm({purpose='rsvp'}:{purpose?:'rsvp'|'schedule'}) {
    busy={busy}
    onSubmit={(guestId,correctedName)=>pageRequest({action:'request-name-correction',guestId,correctedName})}
   />}
-  {household&&purpose==='rsvp'&&step==='edit'&&<GuestDietaryRestrictions
-   key={household.id} household={household} busy={busy} expanded={false}
-   onSave={notes=>pageRequest({action:'save-dietary-restrictions',notes})}
-  />}
   {step==='edit'&&household&&purpose==='schedule'&&<HouseholdSchedule household={household} events={schedule} busy={busy} onRestart={restart}/>}
   {step==='edit'&&household&&purpose==='rsvp'&&<>
    <div className={styles.householdHeader}><p>{household.name}</p><button className={`text-link ${styles.quietLink}`} type="button" disabled={busy} onClick={restart}>Not your household?</button></div>
@@ -138,19 +137,27 @@ export function RsvpForm({purpose='rsvp'}:{purpose?:'rsvp'|'schedule'}) {
     </div></div>
     <div className={styles.navigation}>
      {eventIndex>0&&<button className="button button--outline" type="button" disabled={busy} onClick={()=>{setError(null);setEventIndex(eventIndex-1);}}>Back</button>}
-     <button className={`button ${styles.nextButton}`} type="submit" disabled={busy}>{nextEvent?`Next: ${nextEvent.name}`:'Review responses'}</button>
+     <button className={`button ${styles.nextButton}`} type="submit" disabled={busy}>{nextEvent?`Next: ${nextEvent.name}`:'Next: Dietary restrictions'}</button>
     </div>
    </form>}
   </>}
+  {step==='dietary'&&household&&<form onSubmit={event=>{event.preventDefault();setStep('review');}}>
+   <h2 ref={eventHeading} tabIndex={-1}>Dietary restrictions</h2>
+   <p>Any allergies or dietary needs we should know about? This applies to every event. Leave blank if none.</p>
+   <div className={styles.dietaryFields}>{household.guests.map(guest=><label key={guest.id}>{guest.name}
+    <textarea value={guest.dietaryRestrictions??''} onChange={event=>setDietary(guest.id,event.target.value)} maxLength={500} rows={2} disabled={busy} placeholder="e.g. vegetarian, nut allergy"/>
+   </label>)}</div>
+   <div className={styles.navigation}><button className="button button--outline" type="button" disabled={busy} onClick={()=>editEvent(household.events.length-1)}>Back</button><button className={`button ${styles.nextButton}`} type="submit" disabled={busy}>Review responses</button></div>
+  </form>}
   {step==='review'&&household&&<>
    <h2 ref={eventHeading} tabIndex={-1}>Review your responses</h2><p>Check your answers, then submit your RSVP.</p>
    {household.events.map((event,index)=><section key={event.id} className={styles.reviewEvent}><div className={styles.reviewHeading}><h3>{event.name}</h3><button className={`text-link ${styles.quietLink}`} type="button" disabled={busy} onClick={()=>editEvent(index)} aria-label={`Edit ${event.name} responses`}>Edit</button></div><dl className={styles.reviewGuests}>{event.guests.map(guest=><div key={guest.id}><dt>{guest.name}</dt><dd>{guest.attendance==='attending'?'Attending':'Can’t make it'}</dd></div>)}</dl></section>)}
-   <div className={styles.navigation}><button className="button button--outline" type="button" disabled={busy} onClick={()=>editEvent(household.events.length-1)}>Back</button><button className={`button ${styles.nextButton}`} type="button" disabled={busy} onClick={submit}>{busy?'Saving…':'Submit RSVP'}</button></div>
+   <DietarySummary household={household} busy={busy} onEdit={()=>{setError(null);setStep('dietary');}}/>
+   <div className={styles.navigation}><button className="button button--outline" type="button" disabled={busy} onClick={()=>setStep('dietary')}>Back</button><button className={`button ${styles.nextButton}`} type="button" disabled={busy} onClick={submit}>{busy?'Saving…':'Submit RSVP'}</button></div>
   </>}
-  {step==='success'&&household&&<div aria-live="polite"><h2 ref={eventHeading} tabIndex={-1}>Your RSVP is saved.</h2><p>Thank you! You can return to this page to review or update your responses.</p><p><a className="text-link" href="/schedule">View your weekend schedule</a></p><button className="button" type="button" onClick={()=>editEvent(0)}>Review or update responses</button><br/><button className="text-link" type="button" disabled={busy} onClick={restart}>Find another invitation</button></div>}
-  {household&&purpose==='rsvp'&&step==='success'&&<GuestDietaryRestrictions
-   key={household.id} household={household} busy={busy} expanded
-   onSave={notes=>pageRequest({action:'save-dietary-restrictions',notes})}
-  />}
+  {step==='success'&&household&&<div aria-live="polite"><h2 ref={eventHeading} tabIndex={-1}>Your RSVP is saved.</h2><p>Thank you! You can return to this page to review or update your responses.</p><DietarySummary household={household} busy={busy} onEdit={()=>{setError(null);setStep('dietary');}}/><p><a className="text-link" href="/schedule">View your weekend schedule</a></p><button className="button" type="button" onClick={()=>editEvent(0)}>Review or update responses</button><br/><button className="text-link" type="button" disabled={busy} onClick={restart}>Find another invitation</button></div>}
  </section>;
+}
+function DietarySummary({household,busy,onEdit}:{household:HouseholdView;busy:boolean;onEdit:()=>void}) {
+ return <section className={styles.reviewEvent}><div className={styles.reviewHeading}><h3>Dietary restrictions</h3><button className={`text-link ${styles.quietLink}`} type="button" disabled={busy} onClick={onEdit} aria-label="Edit dietary restrictions">Edit</button></div><dl className={styles.reviewGuests}>{household.guests.map(guest=><div key={guest.id}><dt>{guest.name}</dt><dd className={styles.dietaryNote}>{guest.dietaryRestrictions?.trim()||'None'}</dd></div>)}</dl></section>;
 }

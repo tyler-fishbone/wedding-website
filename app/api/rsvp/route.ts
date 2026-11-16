@@ -82,20 +82,13 @@ export async function POST(request: Request) {
    await saveNameCorrection(householdId,validateNameCorrection(view,body.guestId,body.correctedName));
    return json({ok:true});
   }
-  if (body.action === 'save-dietary-restrictions') {
-   const householdId=await householdSession();
-   await enforceRateLimit(request,'dietaryRestrictions');
-   const {invitations}=await loadHousehold(householdId);
-   const notes=validateDietaryRestrictions(body.notes,invitations);
-   if(!notes.length)throw new RsvpError('Enter dietary restrictions for at least one guest.');
-   await saveDietaryRestrictions(householdId,notes);
-   return json({ok:true});
-  }
   if (body.action === 'save') {
    const householdId = await householdSession();
    const {invitations} = await loadHousehold(householdId);
    const responses = validateResponses(body.responses,invitations);
+   const notes = body.dietaryRestrictions===undefined?[]:validateDietaryRestrictions(body.dietaryRestrictions,invitations);
    await saveResponses(householdId,responses);
+   if(notes.length)await saveDietaryRestrictions(householdId,notes);
    const {view} = await loadHousehold(householdId);
    return json({household:view});
   }

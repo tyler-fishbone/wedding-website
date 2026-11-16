@@ -4,7 +4,7 @@ import {buildSchedule,hasPendingRsvps,type ScheduleEventRecord} from '../app/lib
 import type {HouseholdView} from '../app/lib/rsvp.ts';
 import {events as publishedDetails} from '../app/content/wedding.ts';
 const record:ScheduleEventRecord={id:'wedding-id',slug:'wedding',name:'Wedding',starts_at:'2027-04-04T22:00:00Z',ends_at:'2027-04-05T04:00:00Z',time_zone:'America/Chicago',venue_name:'The Addison Grove',address_line_1:'11903 Fitzhugh Road',address_line_2:null,city:'Austin',region:'TX',postal_code:'78736',country_code:'US',description:null,attire:'Cocktail'};
-const view:HouseholdView={id:'example',name:'Example household',events:[{id:record.id,name:record.name,startsAt:record.starts_at,endsAt:record.ends_at,timeZone:record.time_zone,venue:record.venue_name,description:null,attire:record.attire,guests:[{id:'guest',name:'Example Guest',attendance:null}]}]};
+const view:HouseholdView={id:'example',name:'Example household',guests:[],events:[{id:record.id,name:record.name,startsAt:record.starts_at,endsAt:record.ends_at,timeZone:record.time_zone,venue:record.venue_name,description:null,attire:record.attire,guests:[{id:'guest',name:'Example Guest',attendance:null}]}]};
 test('schedule includes invited events only, even when other records or static content are supplied',()=>{
  const result=buildSchedule(view,[{...record,id:'private',slug:'welcome-party',name:'Private welcome'},record],publishedDetails);
  assert.equal(result.length,1);assert.equal(result[0].id,record.id);assert.equal(result[0].name,'Wedding');

@@ -4,10 +4,11 @@ export type Attendance = 'attending' | 'declined';
 export type ResponseInput = { guestId: string; eventId: string; attendance: Attendance };
 export type DietaryRestrictionInput = {guestId:string;restrictions:string};
 export type InvitationRecord = { guest_id: string; event_id: string };
-export type GuestRecord = { id: string; display_name: string };
+export type GuestRecord = { id: string; display_name: string; dietary_restrictions?: string | null };
 export type EventRecord = { id: string; name: string; starts_at: string | null; ends_at: string | null; time_zone: string; venue_name: string | null; description: string | null; attire: string | null };
 export type HouseholdView = {
  id: string; name: string;
+ guests: { id: string; name: string; dietaryRestrictions: string | null }[];
  events: { id: string; name: string; startsAt: string | null; endsAt: string | null; timeZone: string; venue: string | null; description: string | null; attire: string | null; guests: { id: string; name: string; attendance: Attendance | null }[] }[];
 };
 export class RsvpError extends Error {
@@ -40,7 +41,7 @@ export function validateDietaryRestrictions(value:unknown,invitations:Invitation
   if(typeof guestId!=='string'||!allowed.has(guestId)||seen.has(guestId))throw new RsvpError('Choose each invited guest only once.');
   if(typeof restrictions!=='string'||restrictions.length>500||/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(restrictions))throw new RsvpError('Enter dietary restrictions of up to 500 characters.');
   seen.add(guestId);
-  if(restrictions.trim())notes.push({guestId,restrictions:restrictions.trim()});
+  notes.push({guestId,restrictions:restrictions.trim()});
  }
  return notes;
 }
@@ -99,7 +100,8 @@ export function buildHouseholdView(household: {id:string;display_name:string}, g
   const answer = answerByPair.get(`${guest.id}:${event.id}`);
   events.get(event.id)!.guests.push({id:guest.id,name:guest.display_name,attendance:answer === 'attending' || answer === 'declined' ? answer : null});
  }
- return {id:household.id,name:household.display_name,events:[...events.values()].sort((a,b)=>(a.startsAt??'9999').localeCompare(b.startsAt??'9999'))};
+ const invitedGuests=[...new Set(invitations.map(invitation=>invitation.guest_id))].flatMap(id=>guestById.get(id)??[]).map(guest=>({id:guest.id,name:guest.display_name,dietaryRestrictions:guest.dietary_restrictions??null}));
+ return {id:household.id,name:household.display_name,guests:invitedGuests,events:[...events.values()].sort((a,b)=>(a.startsAt??'9999').localeCompare(b.startsAt??'9999'))};
 }
 
 export function checkOrigin(request: Request) {

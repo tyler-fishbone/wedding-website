@@ -34,7 +34,7 @@ export async function findHouseholds(query: string, mode: 'name'|'email') {
 }
 export async function loadHousehold(householdId: string) {
  const householdFilter = new URLSearchParams({id:`eq.${householdId}`,select:'id,display_name'});
- const guestFilter = new URLSearchParams({archived_at:'is.null',household_id:`eq.${householdId}`,select:'id,display_name',order:'display_name'});
+ const guestFilter = new URLSearchParams({archived_at:'is.null',household_id:`eq.${householdId}`,select:'id,display_name,dietary_restrictions',order:'display_name'});
  const [households,guests] = await Promise.all([
   database<{id:string;display_name:string}[]>(`households?${householdFilter}`),
   database<GuestRecord[]>(`guests?${guestFilter}`)

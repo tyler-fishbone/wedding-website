@@ -101,7 +101,7 @@ export function buildHouseholdList(households:AdminHousehold[],guests:AdminGuest
  for(const invitation of invitations){const group=invitationsByGuest.get(invitation.guest_id)??[];group.push(invitation);invitationsByGuest.set(invitation.guest_id,group);}
  return {events,rows:households.map(household=>{
   const members=guestsByHousehold.get(household.id)??[];
-  return {id:household.id,name:household.display_name,email:household.contact_email,addressLines:household.address_line_1?.trim()?[household.address_line_1,household.address_line_2,[household.city,household.region,household.postal_code].filter(Boolean).join(', '),household.country_code].filter((line):line is string=>Boolean(line?.trim())):[],mailingStatus:household.mailing_status,needsReview:household.grouping_needs_review,guests:members.map(guest=>({id:guest.id,name:guest.display_name})),events:events.map(event=>{
+  return {id:household.id,name:household.display_name,email:household.contact_email,addressLines:household.address_line_1?.trim()?[household.address_line_1,household.address_line_2,[household.city,household.region,household.postal_code].filter(Boolean).join(', '),household.country_code].filter((line):line is string=>Boolean(line?.trim())):[],mailingStatus:household.mailing_status,needsReview:household.grouping_needs_review,guests:members.map(guest=>({id:guest.id,name:guest.display_name,dietaryRestrictions:guest.dietary_restrictions??null})),events:events.map(event=>{
    const invited=members.flatMap(guest=>invitationsByGuest.get(guest.id)??[]).filter(invitation=>invitation.event_id===event.id&&invitation.is_active);
    const answered=responsesByEvent.get(event.id);
    const guestResponses=members.flatMap(guest=>{

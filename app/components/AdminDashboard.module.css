@@ -38,3 +38,4 @@
 .tableWrap .guestRsvpList li:last-child{margin-bottom:0}
 .tableWrap .guestRsvpList span{margin:0;font-size:inherit}
 .guestRsvpList small{color:var(--ink-soft);white-space:nowrap}
+.tableWrap .guestRsvpList .dietaryNote{grid-column:2/-1;font-size:13px;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--ink)}
