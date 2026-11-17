@@ -70,4 +70,4 @@ export const faqs: FaqItem[] = [
   { question: "Can I bring a plus-one?", answer: "Your household’s named guests are listed when you look up your invitation on the RSVP page. Please reach out to us if anything is unclear." },
 ];
 
-export const registryItems: RegistryItem[] = [{ eyebrow: "Registry", title: "Our registry on Zola", body: "View our registry on Zola.", href: "https://www.zola.com/registry/tylerandkatieapril4", status: "active" }];
+export const registryItems: RegistryItem[] = [{ eyebrow: "Registry", title: "Our registry on Zola", body: "View our registry on Zola", href: "https://www.zola.com/registry/tylerandkatieapril4", status: "active" }];
