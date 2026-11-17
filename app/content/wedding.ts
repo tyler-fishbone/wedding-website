@@ -61,13 +61,13 @@ export const guidePlaces: GuidePlace[] = [
 ];
 
 export const faqs: FaqItem[] = [
-  { question: "Can we bring our kids?", answer: "If they're over 18 and they’re listed in your household’s RSVP, definitely! Otherwise, this wedding is adults only. We look forward to spending some adult time with you. Not like that, but like... you know." },
+  { question: "Can we bring our kids?", answer: "Alas, no. We love your offspring, but we look forward to spending some adult time with you this weekend." },
   { question: "Am I invited to the welcome party?", answer: "Find your household on the schedule page to see which weekend events you’re invited to." },
   { question: "What should I wear?", answer: "See the schedule page. If you have any questions, reach out to Tyler or Katie!", answerLink: { label: "schedule page", href: "/schedule" } },
   { question: "Is the ceremony indoors or outdoors?", answer: "We’ve planned an outdoor ceremony, but we’ll pivot indoors if the weather changes. Keep an eye on the forecast closer to our wedding weekend in case you need to pack an umbrella!" },
   { question: "Is there parking at the venue?", answer: "Yes, there’s plenty of parking at the venue. It’s about a 25-minute drive from the Hyatt Regency Austin, so feel free to carpool. We will have a shuttle bus for out-of-towners, coming to and from the Hyatt on Sunday. Since the venue is a bit more remote, rideshares can be more infrequent — so we recommend planning accordingly." },
-  { question: "Do you have a gift registry?", answer: "Not yet. We’ll add registry information here when it is ready." },
+  { question: "Do you have a gift registry?", answer: "Yes! You can find it on Zola.", answerLink: { label: "Zola", href: "https://www.zola.com/registry/tylerandkatieapril4" } },
   { question: "Can I bring a plus-one?", answer: "Your household’s named guests are listed when you look up your invitation on the RSVP page. Please reach out to us if anything is unclear." },
 ];
 
-export const registryItems: RegistryItem[] = [{ eyebrow: "Registry", title: "Details coming soon", body: "Registry information will be added here when it is ready.", status: "coming-soon" }];
+export const registryItems: RegistryItem[] = [{ eyebrow: "Registry", title: "Our registry on Zola", body: "View our registry on Zola.", href: "https://www.zola.com/registry/tylerandkatieapril4", status: "active" }];
